@@ -1,11 +1,16 @@
 import numpy as np
 import pylab as plt
 import seaborn as sns
+import sys, os
+sys.path.append(os.path.expanduser('~/devel/mriqc'))
 from mriqc.misc import plot_vline
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf as FigureCanvas
 from matplotlib.gridspec import GridSpec
 
+# QUALITY CONTROL FOR MOTION CORRECTION 
+
+# framewise displacement (FD) for a subject's motion parameters
 def calc_frame_dispalcement(realignment_parameters_file):
     lines = open(realignment_parameters_file, 'r').readlines()
     rows = [[float(x) for x in line.split()] for line in lines]
@@ -21,6 +26,7 @@ def calc_frame_dispalcement(realignment_parameters_file):
     
     return FD_power
 
+# get mean and max FD for all subjects iteratively 
 def get_mean_frame_displacement_disttribution(realignment_parameters_files):
     mean_FDs = []
     max_FDs = []
@@ -31,6 +37,7 @@ def get_mean_frame_displacement_disttribution(realignment_parameters_files):
         
     return mean_FDs, max_FDs
 
+# plotting a subject's FD distribution and optionally mean_FD line
 def plot_frame_displacement(realignment_parameters_file, mean_FD_distribution=None, figsize=(11.7,8.3)):
 
     FD_power = calc_frame_dispalcement(realignment_parameters_file)
@@ -63,3 +70,23 @@ def plot_frame_displacement(realignment_parameters_file, mean_FD_distribution=No
         plot_vline(MeanFD, label, ax=ax)
         
     return fig
+
+infiles = ['/nobackup/ilz2/bayrak/preprocess/hc01/rsd00/func_prepro/rest_roi.nii.gz.par',
+	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par',
+	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par',
+	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par']
+
+infile = infiles[0]
+
+A = calc_frame_dispalcement(infile) 
+
+mean_FD_dist, max_FD_dist = get_mean_frame_displacement_disttribution(infiles)
+
+Figure = plot_frame_displacement(infile, mean_FD_distribution = mean_FD_dist, 
+	                         figsize=(11.7,8.3))
+
+Figure.savefig('C.pdf', format='pdf')
+
+
+
+

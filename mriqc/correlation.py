@@ -1,3 +1,5 @@
+import os, sys
+sys.path.append(os.path.expanduser('~/devel/mriqc'))
 import nibabel as nb
 import numpy as np
 import seaborn as sns
@@ -17,7 +19,6 @@ def get_similarity_distribution(mincost_files):
         similarities.append(similarity)
     return similarities
     
-    
 def plot_epi_T1_corregistration(mean_epi_file, reg_file, fssubjects_dir, subject_id, similarity_distribution=None, figsize=(11.7,8.3),):
        
     fig = plt.figure(figsize=figsize)
@@ -30,20 +31,21 @@ def plot_epi_T1_corregistration(mean_epi_file, reg_file, fssubjects_dir, subject
         label = "similarity = %g"%cur_similarity
         plot_vline(cur_similarity, label, ax=ax)
         
-        ax = plt.subplot(2,1,0)
+        ax = plt.subplot(2,1,1)
     else:
-        ax = plt.subplot(1,1,0)
+        ax = plt.subplot(1,1,1)
     
     res = ApplyVolTransform(source_file = mean_epi_file,
                             reg_file = reg_file,
                             fs_target = True,
                             subjects_dir = fssubjects_dir,
                             terminal_output = "none").run()
-
+    print res.outputs.transformed_file
     func = nb.load(res.outputs.transformed_file).get_data()
     func_affine = nb.load(res.outputs.transformed_file).get_affine()
     
     ribbon_file = "%s/%s/mri/ribbon.mgz"%(fssubjects_dir, subject_id)
+    print ribbon_file
     ribbon_nii = nb.load(ribbon_file)
     ribbon_data = ribbon_nii.get_data()
     ribbon_data[ribbon_data > 1] = 1
@@ -56,5 +58,16 @@ def plot_epi_T1_corregistration(mean_epi_file, reg_file, fssubjects_dir, subject
                            axes = ax,
                            draw_cross = False)
     slicer.contour_map(np.asarray(ribbon_data), np.asarray(ribbon_affine), levels=[.51], colors=['r',])
-    
+    plt.show()
     return fig
+
+infiles = ['/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest2anat.dat.mincost',
+           '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00_T1d00/bbregister/rest2anat.dat.mincost']
+print get_similarity_distribution(infiles)
+
+mean_epi_file = '/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest_mean.nii.gz'
+reg_file = '/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest2anat.dat'
+fssubjects_dir = '/nobackup/ilz2/bayrak/preprocess/hc01/T1d00'
+subject_id = 'recon_all'
+Figure = plot_epi_T1_corregistration(mean_epi_file,  reg_file, fssubjects_dir, subject_id, similarity_distribution=None, figsize=(11.7,8.3))
+plt.show()

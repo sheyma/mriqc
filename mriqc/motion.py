@@ -2,8 +2,8 @@ import numpy as np
 import pylab as plt
 import seaborn as sns
 import sys, os
-sys.path.append(os.path.expanduser('~/devel/mriqc'))
-from mriqc.misc import plot_vline
+sys.path.append(os.path.expanduser('/home/raid/bayrak/devel/mriqc/mriqc'))
+from misc import plot_vline
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf as FigureCanvas
 from matplotlib.gridspec import GridSpec
@@ -71,10 +71,8 @@ def plot_frame_displacement(realignment_parameters_file, mean_FD_distribution=No
         
     return fig
 
-infiles = ['/nobackup/ilz2/bayrak/preprocess/hc01/rsd00/func_prepro/rest_roi.nii.gz.par',
-	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par',
-	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par',
-	   '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00/func_prepro/rest_roi.nii.gz.par']
+infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/rest_roi.nii.gz.par',
+	   '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/rest_roi.nii.gz.par' ]
 
 infile = infiles[0]
 

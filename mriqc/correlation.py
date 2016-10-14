@@ -1,12 +1,12 @@
 import os, sys
-sys.path.append(os.path.expanduser('~/devel/mriqc'))
+sys.path.append(os.path.expanduser('/home/raid/bayrak/devel/mriqc/mriqc'))
 import nibabel as nb
 import numpy as np
 import seaborn as sns
 from pylab import cm
 from nipype.interfaces.freesurfer.preprocess import ApplyVolTransform
 from nipy.labs import viz
-from mriqc.misc import plot_vline
+from misc import plot_vline
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf as FigureCanvas
 from matplotlib.gridspec import GridSpec
@@ -35,6 +35,7 @@ def plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_di
     else:
         ax = plt.subplot(1,1,1)
     
+
     res = ApplyVolTransform(source_file = mean_epi_file,
                             reg_file = reg_file,
                             fs_target = True,
@@ -72,10 +73,18 @@ infiles = ['/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest2an
            '/nobackup/ilz2/bayrak/preprocess/hc02/rsd00_T1d00/bbregister/rest2anat.dat.mincost']
 similarities = get_similarity_distribution(infiles)
 
-mean_epi_file = '/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest_mean.nii.gz'
-reg_file = '/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/bbregister/rest2anat.dat'
-fssubjects_dir = '/nobackup/ilz2/bayrak/preprocess/hc01/T1d00'
-subject_id = 'recon_all'
+print similarities
+
+mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'
+
+reg_file       = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat'
+
+fssubjects_dir = '/nobackup/ilz2/bayrak/freesurfer'
+subject_id     = 'hc01_d00'
+
 wm_file = '/nobackup/ilz2/bayrak/preprocess/hc01/rsd00_T1d00/denoise/aparc_aseg.nii.gz'
+
 Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, similarity_distribution=None, figsize=(11.7,8.3))
+
 plt.show()
+Figure.savefig('D.pdf', format='pdf')

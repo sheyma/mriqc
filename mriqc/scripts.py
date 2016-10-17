@@ -1,9 +1,10 @@
 #!/usr/bin/env python 
-import argparse, os
+import argparse, os, sys
+sys.path.append(os.path.expanduser('/home/raid/bayrak/devel/mriqc/mriqc'))
 import gc
 import pylab as plt
 from matplotlib.backends.backend_pdf import PdfPages
-from mriqc.volumes import plot_mosaic
+from volumes import plot_mosaic
 import nibabel as nb
 
 

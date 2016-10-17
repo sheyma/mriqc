@@ -1,10 +1,11 @@
 import math
-import os
+import os, sys
 import time
 import nibabel as nb
 import numpy as np
 import seaborn as sns
-from mriqc.misc import plot_vline
+sys.path.append(os.path.expanduser('/home/raid/bayrak/devel/mriqc/mriqc'))
+from misc import plot_vline
 from matplotlib.figure import Figure
 from pylab import cm
 from matplotlib.gridspec import GridSpec
@@ -66,7 +67,7 @@ def plot_mosaic(nifti_file, title=None, overlay_mask = None, figsize=(11.7,8.3))
     if not title:
         _, title = os.path.split(nifti_file)
         title += " (last modified: %s)"%time.ctime(os.path.getmtime(nifti_file))
-    fig.suptitle(title, fontsize='10')
+    fig.suptitle(title, fontsize='14')
     
     return fig
     
@@ -96,15 +97,26 @@ def plot_distrbution_of_values(main_file, mask_file, xlabel, distribution=None, 
     
     gs = GridSpec(2, 1)
     ax = fig.add_subplot(gs[0, 0])
-    sns.distplot(data.astype(np.double), kde=False, bins=100, ax=ax)
+    #sns.distplot(data.astype(np.double), kde=False, bins=100, ax=ax)
+    sns.distplot(np.array(data, dtype=np.double), kde=False, bins=100, ax=ax) 
     ax.set_xlabel(xlabel)
     
     ax = fig.add_subplot(gs[1, 0])
-    sns.distplot(np.array(distribution).astype(np.double), ax=ax)
+    #sns.distplot(np.array(distribution).astype(np.double), ax=ax)
+    sns.distplot(np.array(distribution, dtype=np.double), ax=ax)
     cur_val = np.median(data)
     label = "%g"%cur_val
     plot_vline(cur_val, label, ax=ax)
     ax.set_xlabel(xlabel2)
     
     return fig
+
+## single run
+#main_files = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/corr_rest_roi_tsnr.nii.gz', 
+#              '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/realign/corr_rest_roi_tsnr.nii.gz']
+
+#mask_files = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/brain_mask_func.nii.gz', 
+#	      '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/denoise/mask/brain_mask_func.nii.gz']
+
+#print get_median_distribution(main_files, mask_files)
     

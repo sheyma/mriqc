@@ -73,7 +73,7 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
 
 ## simple run
 #infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/rest2anat.dat.mincost',
-           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/rest2anat.dat.mincost']
+#           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/rest2anat.dat.mincost']
 #similarities = get_similarity_distribution(infiles)
 
 #print similarities
@@ -88,7 +88,7 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
 #wm_file = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/aparc_aseg.nii.gz'
 
 #Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, 
-					similarity_distribution=None, figsize=(11.7,8.3))
+#					similarity_distribution=None, figsize=(11.7,8.3))
 
 #plt.show()
 #Figure.savefig('D.pdf', format='pdf')

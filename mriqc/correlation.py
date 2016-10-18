@@ -38,14 +38,21 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
     else:
         ax = plt.subplot(1,1,1)
     
-    res = ApplyVolTransform(source_file = mean_epi_file,
-                            reg_file = reg_file,
-                            fs_target = True,
-                            subjects_dir = fssubjects_dir,
-                            terminal_output = "none").run()
-
-    func = nb.load(res.outputs.transformed_file).get_data()
-    func_affine = nb.load(res.outputs.transformed_file).get_affine()
+    trf_file = 'fuck.nii.gz' 	
+    
+    res = ApplyVolTransform()
+    res.inputs.source_file     = mean_epi_file
+    res.inputs.reg_file        = reg_file
+    res.inputs.fs_target       = True
+    res.inputs.subjects_dir    = fssubjects_dir
+    res.inputs.terminal_output = "none"
+    print "START RUNNING..."
+    print res.cmdline
+    RES = res.run()	
+    print "SUCCESFULLY RUN "	
+    	
+    func = nb.load(RES.outputs.transformed_file).get_data()
+    func_affine = nb.load(RES.outputs.transformed_file).get_affine()
     
     #ribbon_file = "%s/%s/mri/ribbon.mgz"%(fssubjects_dir, subject_id)
     #ribbon_nii = nb.load(ribbon_file)
@@ -64,31 +71,31 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
                            axes = ax,
                            draw_cross = False)
     slicer.contour_map(np.asarray(wm_data), np.asarray(wm_affine), 
-		       linewidths=[0.1], colors=['r',])
+    		       linewidths=[0.1], colors=['r',])
     
     fig.suptitle('coregistration', fontsize='14')
-    
+    print "YESSS"
     return fig
 
 
-## simple run
-#infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/rest2anat.dat.mincost',
-#           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/rest2anat.dat.mincost']
-#similarities = get_similarity_distribution(infiles)
+# simple run
+infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/rest2anat.dat.mincost',
+           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/rest2anat.dat.mincost']
+similarities = get_similarity_distribution(infiles)
 
-#print similarities
+print similarities
 
-#mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'
+mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'
 
-#reg_file       = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat'
+reg_file       = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat'
 
-#fssubjects_dir = '/nobackup/ilz2/bayrak/freesurfer'
-#subject_id     = 'hc01_d00'
+fssubjects_dir = '/nobackup/ilz2/bayrak/freesurfer'
+subject_id     = 'hc01_d00'
 
-#wm_file = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/aparc_aseg.nii.gz'
+wm_file = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/aparc_aseg.nii.gz'
 
-#Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, 
-#					similarity_distribution=None, figsize=(11.7,8.3))
+Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, 
+					similarity_distribution=None, figsize=(11.7,8.3))
 
-#plt.show()
+plt.show()
 #Figure.savefig('D.pdf', format='pdf')

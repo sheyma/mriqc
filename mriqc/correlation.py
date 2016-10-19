@@ -77,6 +77,8 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
     print "YESSS"
     return fig
 
+subject_id     = sys.argv[1]
+print "OOOOOOOOOOOO", subject_id
 
 # simple run
 infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/rest2anat.dat.mincost',
@@ -85,14 +87,14 @@ similarities = get_similarity_distribution(infiles)
 
 print similarities
 
-mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'
+mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'%(subject_id)
 
-reg_file       = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat'
+reg_file       = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/coregister/transforms2anat/rest2anat.dat'%(subject_id)
 
 fssubjects_dir = '/nobackup/ilz2/bayrak/freesurfer'
-subject_id     = 'hc01_d00'
 
-wm_file = '/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/aparc_aseg.nii.gz'
+
+wm_file = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/denoise/mask/aparc_aseg.nii.gz'%(subject_id)
 
 Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, 
 					similarity_distribution=None, figsize=(11.7,8.3))

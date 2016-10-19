@@ -43,13 +43,13 @@ if __name__ == '__main__':
 
     
     for subject_id in subjects:
-	print subject_id
+	print subject
 
         #setting paths for this subject
         tsnr_file                   = data_dir + "%s/preprocessed/func/realign/corr_rest_roi_tsnr.nii.gz"%(subject) 
         realignment_parameters_file = data_dir + "%s/preprocessed/func/realign/rest_roi.nii.gz.par"%(subject)
-        mean_epi_file 		    = data_dir + "%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz"%(subject_id) 
-        wm_file 		    = data_dir + "%s/preprocessed/func/denoise/mask/aparc_aseg.nii.gz"%(subject_id)
+        mean_epi_file 		    = data_dir + "%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz"%(subject) 
+        wm_file 		    = data_dir + "%s/preprocessed/func/denoise/mask/aparc_aseg.nii.gz"%(subject)
         mask_file                   = data_dir + "%s/preprocessed/func/denoise/mask/brain_mask_func.nii.gz"%(subject)
         reg_file                    = data_dir + "%s/preprocessed/func/coregister/transforms2anat/rest2anat.dat"%(subject)
         fssubjects_dir              = "/nobackup/ilz2/bayrak/freesurfer"
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 	                        function = create_report), 
 				name="report_%s"%(subject_id).replace(".", "_"))
 
-        report.inputs.subject_id                  = subject_id
+        report.inputs.subject_id                  = subject
         report.inputs.tsnr_file                   = tsnr_file
         report.inputs.realignment_parameters_file = realignment_parameters_file
         report.inputs.mean_epi_file               = mean_epi_file

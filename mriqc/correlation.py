@@ -20,7 +20,7 @@ def get_similarity_distribution(mincost_files):
     return similarities
     
     
-def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir, 
+def plot_epi_T1_corregistration(mean_epi_to_anat, wm_file, fssubjects_dir, 
 				subject_id, similarity_distribution=None, 
 				figsize=(11.7,8.3),):
        
@@ -37,22 +37,9 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
         ax = plt.subplot(2,1,1)
     else:
         ax = plt.subplot(1,1,1)
-    
-    trf_file = 'fuck.nii.gz' 	
-    
-    res = ApplyVolTransform()
-    res.inputs.source_file     = mean_epi_file
-    res.inputs.reg_file        = reg_file
-    res.inputs.fs_target       = True
-    res.inputs.subjects_dir    = fssubjects_dir
-    res.inputs.terminal_output = "none"
-    print "START RUNNING..."
-    print res.cmdline
-    RES = res.run()	
-    print "SUCCESFULLY RUN "	
-    	
-    func = nb.load(RES.outputs.transformed_file).get_data()
-    func_affine = nb.load(RES.outputs.transformed_file).get_affine()
+	
+    func = nb.load(mean_epi_to_anat).get_data()
+    func_affine = nb.load(mean_epi_to_anat).get_affine()
     
     #ribbon_file = "%s/%s/mri/ribbon.mgz"%(fssubjects_dir, subject_id)
     #ribbon_nii = nb.load(ribbon_file)
@@ -74,30 +61,24 @@ def plot_epi_T1_corregistration(mean_epi_file, wm_file, reg_file, fssubjects_dir
     		       linewidths=[0.1], colors=['r',])
     
     fig.suptitle('coregistration', fontsize='14')
-    print "YESSS"
+
     return fig
-
-
 
 ## simple run
 #subject_id = 'hc02_d00'
 
-#infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/rest2anat.dat.mincost',
-#           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/rest2anat.dat.mincost']
-#similarities = get_similarity_distribution(infiles)
+#infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat.mincost',
+#           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat.mincost']
 
+#similarities = get_similarity_distribution(infiles)
 #print similarities
 
-#mean_epi_file  = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz'%(subject_id)
-
-#reg_file       = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/coregister/transforms2anat/rest2anat.dat'%(subject_id)
-
+#mean_epi_to_anat = "/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/coregister/rest2anat_highRes.nii.gz"%(subject_id)
+#wm_file = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/anat/brain_wmedge.nii.gz'%(subject_id)
 #fssubjects_dir = '/nobackup/ilz2/bayrak/freesurfer'
 
-#wm_file = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/anat/brain_wmedge.nii.gz'%(subject_id)
 
-#Figure = plot_epi_T1_corregistration(mean_epi_file,  wm_file, reg_file, fssubjects_dir, subject_id, 
+#Figure = plot_epi_T1_corregistration(mean_epi_to_anat,  wm_file, fssubjects_dir, subject_id, 
 #					similarity_distribution=None, figsize=(11.7,8.3))
-#
-#plt.show()
-#Figure.savefig('A_%s.pdf'%(subject_id), format='pdf')
+plt.show()
+#Figure.savefig('A_%s_shortway2.pdf'%(subject_id), format='pdf')

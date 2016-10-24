@@ -67,6 +67,7 @@ def plot_frame_displacement(realignment_parameters_file, mean_FD_distribution=No
         
     return fig
 
+## single run
 
 #infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/realign/rest_roi.nii.gz.par',
 #	   '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/realign/rest_roi.nii.gz.par' ]

@@ -13,17 +13,15 @@ if __name__ == '__main__':
     out_dir= "/nobackup/ilz2/bayrak/results/reports/hc/"
     freesurfer_dir="/nobackup/ilz2/bayrak/freesurfer/"
     
-    scans=['rest']
     wf = Workflow("reports")
-    #wf.base_dir = raw_input('working dir: ')
-    wf.base_dir = '/nobackup/ilz2/bayrak/tmp_wd'
+    wf.base_dir = '/nobackup/ilz2/bayrak/results_workdir'
     with open('/nobackup/ilz2/bayrak/documents/all_hc.txt', 'r') as f:
         subjects = [line.strip() for line in f]
     
     subjects.sort()
 
     #generating distributions
-    mincost_files = [data_dir + "%s/preprocessed/func/coregister/rest2anat.dat.mincost"%(subject) for subject in subjects]
+    mincost_files = [data_dir + "%s/preprocessed/func/coregister/transforms2anat/rest2anat.dat.mincost"%(subject) for subject in subjects]
     similarity_distribution = get_similarity_distribution(mincost_files)
     
       
@@ -41,19 +39,22 @@ if __name__ == '__main__':
     
     similarity_distribution = dict(zip(subjects, similarity_distribution))
 
-    
     for subject_id in subjects:
-	print subject
+	print subject_id
+        # WTF, sort that out!
+
+       
 
         #setting paths for this subject
-        tsnr_file                   = data_dir + "%s/preprocessed/func/realign/corr_rest_roi_tsnr.nii.gz"%(subject) 
-        realignment_parameters_file = data_dir + "%s/preprocessed/func/realign/rest_roi.nii.gz.par"%(subject)
-        mean_epi_file 		    = data_dir + "%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz"%(subject) 
-        wm_file 		    = data_dir + "%s/preprocessed/func/denoise/mask/aparc_aseg.nii.gz"%(subject)
-        mask_file                   = data_dir + "%s/preprocessed/func/denoise/mask/brain_mask_func.nii.gz"%(subject)
-        reg_file                    = data_dir + "%s/preprocessed/func/coregister/transforms2anat/rest2anat.dat"%(subject)
+        tsnr_file                   = data_dir + "%s/preprocessed/func/realign/corr_rest_roi_tsnr.nii.gz"%(subject_id) 
+        realignment_parameters_file = data_dir + "%s/preprocessed/func/realign/rest_roi.nii.gz.par"%(subject_id)
+        mean_epi_file               = data_dir + "%s/preprocessed/func/realign/mean_corr_rest_roi.nii.gz"%(subject_id)
+        wm_file 		    = data_dir + "%s/preprocessed/anat/brain_wmedge.nii.gz"%(subject_id)
+        mask_file                   = data_dir + "%s/preprocessed/func/denoise/mask/brain_mask_func.nii.gz"%(subject_id)
+        mean_epi_to_anat            = data_dir + "%s/preprocessed/func/coregister/rest2anat_highRes.nii.gz"%(subject_id) 
         fssubjects_dir              = "/nobackup/ilz2/bayrak/freesurfer"
-        output_file                 = out_dir+"%s_rest_report.pdf"%(subject)
+        output_file                 = out_dir + "%s_rest_report.pdf"%(subject_id)
+
 
 	report = Node(Function(input_names=['subject_id', 
 		                             'tsnr_file', 
@@ -61,23 +62,23 @@ if __name__ == '__main__':
 		                             'mean_epi_file', 
 					     'wm_file',
 		                             'mask_file', 
-		                             'reg_file', 
+		                             'mean_epi_to_anat', 
 		                             'fssubjects_dir', 
 		                             'similarity_distribution', 
 		                             'mean_FD_distribution', 
 		                             'tsnr_distributions', 
 		                             'output_file'], 
-		                output_names=['out'],
+	                        output_names=['out'],
 	                        function = create_report), 
 				name="report_%s"%(subject_id).replace(".", "_"))
 
-        report.inputs.subject_id                  = subject
+        report.inputs.subject_id                  = subject_id
         report.inputs.tsnr_file                   = tsnr_file
         report.inputs.realignment_parameters_file = realignment_parameters_file
         report.inputs.mean_epi_file               = mean_epi_file
 	report.inputs.wm_file 			  = wm_file
         report.inputs.mask_file                   = mask_file
-        report.inputs.reg_file                    = reg_file
+        report.inputs.mean_epi_to_anat            = mean_epi_to_anat
         report.inputs.fssubjects_dir 		  = fssubjects_dir
         report.inputs.similarity_distribution     = similarity_distribution
         report.inputs.mean_FD_distribution        = mean_FD_distribution

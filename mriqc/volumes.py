@@ -91,19 +91,19 @@ def get_median_distribution(main_files, mask_files):
 
 def plot_distrbution_of_values(main_file, mask_file, xlabel, distribution=None, xlabel2=None, figsize=(11.7,8.3)):
     data = _get_values_inside_a_mask(main_file, mask_file)
-
+    print "data", data
     fig = Figure(figsize=figsize)
     FigureCanvas(fig)
     
     gs = GridSpec(2, 1)
     ax = fig.add_subplot(gs[0, 0])
-    #sns.distplot(data.astype(np.double), kde=False, bins=100, ax=ax)
-    sns.distplot(np.array(data, dtype=np.double), kde=False, bins=100, ax=ax) 
+    sns.distplot(data.astype(np.double), kde=False, bins=100, ax=ax)
+    #sns.distplot(np.array(data, dtype=np.double), kde=False, bins=100, ax=ax) 
     ax.set_xlabel(xlabel)
     
     ax = fig.add_subplot(gs[1, 0])
-    #sns.distplot(np.array(distribution).astype(np.double), ax=ax)
-    sns.distplot(np.array(distribution, dtype=np.double), ax=ax)
+    sns.distplot(np.array(distribution).astype(np.double), ax=ax)
+    #sns.distplot(np.array(distribution, dtype=np.double), ax=ax)
     cur_val = np.median(data)
     label = "%g"%cur_val
     plot_vline(cur_val, label, ax=ax)
@@ -118,5 +118,14 @@ def plot_distrbution_of_values(main_file, mask_file, xlabel, distribution=None, 
 #mask_files = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/denoise/mask/brain_mask_func.nii.gz', 
 #	      '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/denoise/mask/brain_mask_func.nii.gz']
 
-#print get_median_distribution(main_files, mask_files)
+#print main_files[0]
+#dist = get_median_distribution(main_files, mask_files)
+
+
+#Figure = plot_distrbution_of_values(main_files[0], mask_files[0], xlabel='blabla', 
+#			   distribution=dist, xlabel2=None, 
+#			   figsize=(11.7,8.3))
+#Figure.savefig('volumes_bla.pdf', format='pdf')
+
+
     

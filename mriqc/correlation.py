@@ -22,19 +22,21 @@ def get_similarity_distribution(mincost_files):
     
 def plot_epi_T1_corregistration(mean_epi_to_anat, wm_file, fssubjects_dir, 
 				subject_id, similarity_distribution=None, 
-				figsize=(11.7,8.3),):
+				figsize=(8.3,8.3),):
        
     fig = plt.figure(figsize=figsize)
     
     if similarity_distribution:
+	print "AAAA", similarity_distribution
         ax = plt.subplot(2,1,1)
         sns.distplot(similarity_distribution.values(), ax=ax)
         ax.set_xlabel("EPI-T1 similarity after coregistration (over all subjects)")
         cur_similarity = similarity_distribution[subject_id]
+	print cur_similarity
         label = "similarity = %g"%cur_similarity
-        plot_vline(cur_similarity, label, ax=ax)
+        plot_vline(cur_similarity, label, ax)
         
-        ax = plt.subplot(2,1,1)
+        ax = plt.subplot(2,1,2)
     else:
         ax = plt.subplot(1,1,1)
 	
@@ -70,8 +72,11 @@ def plot_epi_T1_corregistration(mean_epi_to_anat, wm_file, fssubjects_dir,
 #infiles = ['/nobackup/ilz2/bayrak/subjects/hc01_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat.mincost',
 #           '/nobackup/ilz2/bayrak/subjects/hc02_d00/preprocessed/func/coregister/transforms2anat/rest2anat.dat.mincost']
 
-#similarities = get_similarity_distribution(infiles)
-#print similarities
+#similarity_distribution = {'hc02_d00': 0.452353, 'hc01_d00' : 0.45303}
+#similarity_distribution = {'hc01_d00': 0.45303,  'hc02_d00' : 0.4000}
+
+#similarity_distribution = {'hc02_d00': 0.452353, 'hc01_d00' : 0.45303}
+
 
 #mean_epi_to_anat = "/nobackup/ilz2/bayrak/subjects/%s/preprocessed/func/coregister/rest2anat_highRes.nii.gz"%(subject_id)
 #wm_file = '/nobackup/ilz2/bayrak/subjects/%s/preprocessed/anat/brain_wmedge.nii.gz'%(subject_id)
@@ -79,6 +84,6 @@ def plot_epi_T1_corregistration(mean_epi_to_anat, wm_file, fssubjects_dir,
 
 
 #Figure = plot_epi_T1_corregistration(mean_epi_to_anat,  wm_file, fssubjects_dir, subject_id, 
-#					similarity_distribution=None, figsize=(11.7,8.3))
-plt.show()
-#Figure.savefig('A_%s_shortway2.pdf'%(subject_id), format='pdf')
+#					similarity_distribution, figsize=(11.7,8.3))
+#plt.show()
+#Figure.savefig('B_shit.pdf', format='pdf')

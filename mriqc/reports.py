@@ -38,10 +38,10 @@ def create_report(subject_id, tsnr_file, realignment_parameters_file,
     report.savefig(fig, dpi=300)
     fig.clf()
     plt.close()
-    
+
     fig = plot_epi_T1_corregistration(mean_epi_to_anat, wm_file, 
 				      fssubjects_dir, subject_id, 
-				      similarity_distribution, figsize=(8.3,8.3))
+				      similarity_distribution, figsize=(11.7,8.3))
     
     report.savefig(fig, dpi=300)
     fig.clf()
@@ -83,10 +83,10 @@ def check(subject_id, scan_id, checklist):
 #mask_file		    = data_dir + "%s/preprocessed/func/denoise/mask/brain_mask_func.nii.gz"%(subject_id)
 #mean_epi_to_anat            = data_dir + "%s/preprocessed/func/coregister/rest2anat_highRes.nii.gz"%(subject_id)
 #fssubjects_dir 		    = "/nobackup/ilz2/bayrak/freesurfer/"
-#similarity_distribution     = {'hc01_d00': 0.45303, 'hc02_d00' : 0.4000}
-#mean_FD_distribution        = [0.07, 0.08]
-#tsnr_distributions	    = [65, 79]
-#output_file                 = "bla2.pdf"
+#similarity_distribution     = {'hc02_d00': 0.452353, 'hc01_d00': 0.45303}
+#mean_FD_distribution        = [0.0729219829036655, 0.10485059652362243]
+#tsnr_distributions	    = [70.147452331515126, 54.186802020255364]
+#output_file                 = "bal.pdf"
 
 #create_report(subject_id, tsnr_file, realignment_parameters_file, 
 #              mean_epi_file, wm_file, mask_file, mean_epi_to_anat,

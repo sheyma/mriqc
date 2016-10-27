@@ -86,5 +86,5 @@ if __name__ == '__main__':
         report.inputs.output_file                 = output_file
         report.plugin_args			  ={'override_specs': 'request_memory = 4000'}
 	wf.add_nodes([report])
-wf.run()	
-#wf.run(plugin='MultiProc', plugin_args={'n_procs' : 30})
+#wf.run()	
+wf.run(plugin='MultiProc', plugin_args={'n_procs' : 30})
